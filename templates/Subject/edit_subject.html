@@ -1,0 +1,54 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Edit Subject{%endblock%}
+
+{%block content%}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Edit Subject</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('edit_subject', subject_id=subject.id) }}" method="POST">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject Name</label>
+                            <input type="text" class="form-control" id="subject" name="name" 
+                                   value="{{ subject.name }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <select class="form-select" id="level" name="level" required>
+                                <option value="">Select Level</option>
+                                <option value="foundation" {% if subject.level == 'foundation' %}selected{% endif %}>Foundation</option>
+                                <option value="diploma" {% if subject.level == 'diploma' %}selected{% endif %}>Diploma</option>
+                                <option value="bsc-3rd yr" {% if subject.level == 'bsc-3rd yr' %}selected{% endif %}>BSc - 3rd Year</option>
+                                <option value="bs-4th yr" {% if subject.level == 'bs-4th yr' %}selected{% endif %}>BS - 4th Year</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3">{{ subject.description }}</textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="additional_details" class="form-label">Additional Details</label>
+                            <textarea class="form-control" id="additional_details" name="additional_details" rows="3">{{ subject.additional_details }}</textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Update Subject</button>
+                            <a href="{{ url_for('admin') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>
