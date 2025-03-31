@@ -88,7 +88,6 @@
                                     <th>Quizzes Taken</th>
                                     <th>Average Score</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -104,11 +103,7 @@
                                             {{ "Passing" if student.average_score >= 60 else "At Risk" }}
                                         </span>
                                     </td>
-                                    <td>
-                                        <a href="{{ url_for('view_student_details', student_id=student.id) }}" class="btn btn-sm btn-primary">
-                                            View Details
-                                        </a>
-                                    </td>
+    
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -128,10 +123,10 @@
     new Chart(subjectCtx, {
         type: 'bar',
         data: {
-            labels: {{ subject_names|tojson }},
+            labels: JSON.parse('{{ subject_names|tojson|safe }}'),
             datasets: [{
                 label: 'Average Score (%)',
-                data: {{ subject_scores|tojson }},
+                data: JSON.parse('{{ subject_scores|tojson|safe }}'),
                 backgroundColor: 'rgba(54, 162, 235, 0.5)',
                 borderColor: 'rgba(54, 162, 235, 1)',
                 borderWidth: 1
@@ -153,9 +148,9 @@
     new Chart(levelCtx, {
         type: 'doughnut',
         data: {
-            labels: {{ level_labels|tojson }},
+            labels: JSON.parse('{{ level_labels|tojson|safe }}'),
             datasets: [{
-                data: {{ level_counts|tojson }},
+                data: JSON.parse('{{ level_counts|tojson|safe }}'),
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.5)',
                     'rgba(54, 162, 235, 0.5)',

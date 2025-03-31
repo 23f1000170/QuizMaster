@@ -751,13 +751,7 @@ def admin_summary():
                          level_labels=level_labels,
                          level_counts=list(level_counts.values()))
 
-@app.route('/admin/student/<int:student_id>/')
-@admin_req
-def view_student_details(student_id):
-    student = Users.query.get_or_404(student_id)
-    if student.user_type != 'student':
-        flash('Invalid student ID', 'danger')
-        return redirect(url_for('admin_summary'))
+
     
     # Get student's quiz history
     completed_quizzes = []
