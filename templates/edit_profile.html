@@ -1,0 +1,59 @@
+{%extends 'dashboard_layout.html'%}
+{%block title%}Profile{%endblock%}
+
+{%block content%}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="text-center">Edit Profile</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{url_for('edit_profile')}}" method="post">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" value="{{user.name}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="student_mail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="student_mail" name="student_mail" value="{{user.email}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">New Password (leave blank to keep current)</label>
+                            <input type="password" class="form-control" id="password" name="password">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <select class="form-select" id="level" name="level" required>
+                                <option value="foundation" {% if user.level == 'foundation' %}selected{% endif %}>Foundation</option>
+                                <option value="diploma" {% if user.level == 'diploma' %}selected{% endif %}>Diploma</option>
+                                <option value="bsc-3rd yr" {% if user.level == 'bsc-3rd yr' %}selected{% endif %}>BSc - 3rd Year</option>
+                                <option value="bs-4th yr" {% if user.level == 'bs-4th yr' %}selected{% endif %}>BS - 4th Year</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob" value="{{user.dob}}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="phone_no" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone_no" name="phone_no" value="{{user.phone_no}}" required>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <a href="{{url_for('student')}}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
