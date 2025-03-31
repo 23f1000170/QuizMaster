@@ -1,0 +1,72 @@
+{% extends "dashboard_layout.html" %}
+
+{% block title %}Edit Question{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Edit Question</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('edit_question', id=question.id) }}">
+                        <div class="mb-3">
+                            <label for="question_text" class="form-label">Question Text</label>
+                            <textarea class="form-control" id="question_text" name="question_text" rows="3" required>{{ question.question_statement }}</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="option_a" class="form-label">Option A</label>
+                            <input type="text" class="form-control" id="option_a" name="option_a" value="{{ question.option_1 }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="option_b" class="form-label">Option B</label>
+                            <input type="text" class="form-control" id="option_b" name="option_b" value="{{ question.option_2 }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="option_c" class="form-label">Option C</label>
+                            <input type="text" class="form-control" id="option_c" name="option_c" value="{{ question.option_3 }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="option_d" class="form-label">Option D</label>
+                            <input type="text" class="form-control" id="option_d" name="option_d" value="{{ question.option_4 }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="correct_option" class="form-label">Correct Option</label>
+                            <select class="form-select" id="correct_option" name="correct_option" required>
+                                <option value="">Select correct option</option>
+                                <option value="A" {% if question.correct_option == 'A' %}selected{% endif %}>A</option>
+                                <option value="B" {% if question.correct_option == 'B' %}selected{% endif %}>B</option>
+                                <option value="C" {% if question.correct_option == 'C' %}selected{% endif %}>C</option>
+                                <option value="D" {% if question.correct_option == 'D' %}selected{% endif %}>D</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="score" class="form-label">Score</label>
+                            <input type="number" class="form-control" id="score" name="score" min="1" value="{{ question.score }}" required>
+                            <div class="form-text">Points awarded for correct answer</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="explanation" class="form-label">Explanation</label>
+                            <textarea class="form-control" id="explanation" name="explanation" rows="2">{{ question.Additional_field }}</textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Update Question</button>
+                            <a href="{{ url_for('show_quiz', subject_id=question.quiz.subject_id, chapter_id=question.quiz.chapter_id, quiz_id=question.quiz_id) }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

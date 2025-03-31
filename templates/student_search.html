@@ -1,0 +1,81 @@
+{%extends 'dashboard_layout.html'%}
+
+{%block title%}Search Quizzes{%endblock%}
+
+{%block content%}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Search Quizzes</h5>
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('student_search') }}" class="mb-4">
+                        <div class="input-group">
+                            <input type="text" name="query" class="form-control" placeholder="Search subjects or chapters..." value="{{ query }}">
+                            <select name="type" class="form-select" style="max-width: 150px;">
+                                <option value="all" {% if search_type == 'all' %}selected{% endif %}>All</option>
+                                <option value="subjects" {% if search_type == 'subjects' %}selected{% endif %}>Subjects</option>
+                                <option value="chapters" {% if search_type == 'chapters' %}selected{% endif %}>Chapters</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+
+                    {% if query %}
+                        <div class="search-results">
+                            {% if search_type in ['all', 'subjects'] %}
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3">Subjects</h6>
+                                    {% if subjects %}
+                                        <div class="list-group">
+                                            {% for subject in subjects %}
+                                                <a href="{{ url_for('show_subject', subject_id=subject.id) }}" class="list-group-item list-group-item-action">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1">{{ subject.name }}</h6>
+                                                        <small>{{ subject.level }}</small>
+                                                    </div>
+                                                    <p class="mb-1">{{ subject.description[:100] }}...</p>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No subjects found</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            {% if search_type in ['all', 'chapters'] %}
+                                <div class="mb-4">
+                                    <h6 class="text-muted mb-3">Chapters</h6>
+                                    {% if chapters %}
+                                        <div class="list-group">
+                                            {% for chapter in chapters %}
+                                                <a href="{{ url_for('show_chapter', subject_id=chapter.subject_id, chapter_id=chapter.id) }}" class="list-group-item list-group-item-action">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1">{{ chapter.name }}</h6>
+                                                        <small>Subject: {{ chapter.subject.name }}</small>
+                                                    </div>
+                                                    <p class="mb-1">{{ chapter.description[:100] }}...</p>
+                                                    <small>Available Quizzes: {{ chapter.quizzes|length }}</small>
+                                                </a>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">No chapters found</p>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted">
+                            <p>Enter a search term to begin</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%} 

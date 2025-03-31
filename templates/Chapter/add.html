@@ -1,0 +1,36 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Add Chapter{%endblock%}
+
+{%block content%}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Add New Chapter to {{ subject.name }}</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('add_chapter', subject_id=subject.id) }}" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Chapter Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-bold">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" 
+                              placeholder="Enter chapter description"></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add Chapter
+                    </button>
+                    <a href="{{ url_for('show_subject', subject_id=subject.id) }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
+</body>
+</html>
