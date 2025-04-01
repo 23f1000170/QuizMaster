@@ -1,0 +1,60 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Add Subject{%endblock%}
+
+{%block content%}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Add New Subject</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('add_subject')}}" method="POST">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label fw-bold">Subject Name</label>
+                            <input type="text" class="form-control" id="subject" name="name" required 
+                                   placeholder="Enter subject name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="level" class="form-label fw-bold">Level</label>
+                            <select class="form-select" id="level" name="level" required>
+                                <option value="">Select Level</option>
+                                <option value="foundation">Foundation</option>
+                                <option value="diploma">Diploma</option>
+                                <option value="bsc-3rd yr">BSc - 3rd Year</option>
+                                <option value="bs-4th yr">BS - 4th Year</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" 
+                                      placeholder="Enter subject description"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="additional_details" class="form-label fw-bold">Additional Details</label>
+                            <textarea class="form-control" id="additional_details" name="additional_details" rows="3"
+                                      placeholder="Enter any additional details"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ url_for('admin') }}" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Add Subject
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

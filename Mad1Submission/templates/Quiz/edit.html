@@ -1,0 +1,41 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Edit Quiz{%endblock%}
+
+{%block content%}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Edit Quiz</h3>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('edit_quiz', subject_id=quiz.subject_id, chapter_id=quiz.chapter_id, quiz_id=quiz.id) }}" method="POST">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Quiz Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{quiz.name}}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3">{{quiz.description}}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="duration" class="form-label">Duration (minutes)</label>
+                    <input type="number" class="form-control" id="duration" name="duration" value="{{quiz.duration}}" min="1" required>
+                </div>
+                <div class="mb-3">
+                    <label for="pass_percentage" class="form-label">Pass Percentage</label>
+                    <input type="number" class="form-control" id="pass_percentage" name="pass_percentage" value="{{quiz.pass_percentage}}" min="0" max="100" required>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a href="{{ url_for('show_chapter', subject_id=quiz.subject_id, chapter_id=quiz.chapter_id) }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}

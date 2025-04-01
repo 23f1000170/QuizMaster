@@ -1,0 +1,30 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Delete Chapter{%endblock%}
+
+{%block content%}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0">Delete Chapter</h3>
+        </div>
+        <div class="card-body">
+            <p class="lead">Are you sure you want to delete "{{chapter.name}}"?</p>
+            <p class="text-muted">This action cannot be undone.</p>
+            
+            <form action="{{ url_for('delete_chapter_post', subject_id=subject_id, chapter_id=chapter.id) }}" method="POST">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete Chapter
+                    </button>
+                    <a href="{{ url_for('show_subject', subject_id=subject_id) }}" class="btn btn-secondary">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{%endblock%}
+</body>
+</html>

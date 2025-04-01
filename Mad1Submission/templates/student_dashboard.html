@@ -1,0 +1,235 @@
+{%extends 'dashboard_layout.html'%}
+
+{%block title%}Student Dashboard{%endblock%}
+
+{%block content%}
+<div class="container-fluid py-4">
+    <!-- Profile Picture -->
+    <div class="profile-container">
+        <a href="{{ url_for('edit_profile') }}" class="profile-link">
+            <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Profile" class="profile-picture">
+            <div class="edit-overlay">
+                <i class="fas fa-pencil-alt"></i>
+            </div>
+        </a>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="welcome-section text-center mb-4">
+        <h1>Welcome, {{ name }}!</h1>
+        <p class="lead">Your Learning Journey Starts Here</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6 text-center">
+            <a href="{{ url_for('student_search') }}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-search"></i> Search Quizzes
+            </a>
+            <a href="{{ url_for('student_summary') }}" class="btn btn-info btn-lg">
+                <i class="fas fa-chart-bar"></i> View Performance
+            </a>
+        </div>
+    </div>
+
+    <!-- Available Quizzes -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Available Quizzes</h5>
+                </div>
+                <div class="card-body">
+                    {% if available_quizzes %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Quiz Name</th>
+                                    <th>Subject</th>
+                                    <th>Chapter</th>
+                                    <th>Duration</th>
+                                    <th>Questions</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for quiz in available_quizzes %}
+                                <tr>
+                                    <td>{{ quiz.name }}</td>
+                                    <td>{{ quiz.chapter.subject.name }}</td>
+                                    <td>{{ quiz.chapter.name }}</td>
+                                    <td>{{ quiz.duration }} minutes</td>
+                                    <td>{{ quiz.total_questions }}</td>
+                                    <td>
+                                        <a href="{{ url_for('take_quiz', subject_id=quiz.subject_id, chapter_id=quiz.chapter_id, quiz_id=quiz.id) }}" 
+                                           class="btn btn-success btn-sm">
+                                            Take Quiz
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-center mb-0">No available quizzes at the moment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completed Quizzes -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Completed Quizzes</h5>
+                </div>
+                <div class="card-body">
+                    {% if completed_quizzes %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Quiz Name</th>
+                                    <th>Subject</th>
+                                    <th>Chapter</th>
+                                    <th>Score</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for quiz in completed_quizzes %}
+                                <tr>
+                                    <td>{{ quiz.name }}</td>
+                                    <td>{{ quiz.chapter.subject.name }}</td>
+                                    <td>{{ quiz.chapter.name }}</td>
+                                    <td>{{ "%.1f"|format(quiz.score) }}%</td>
+                                    <td>
+                                        <span class="badge {% if quiz.status == 'Passed' %}bg-success{% else %}bg-danger{% endif %}">
+                                            {{ quiz.status }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-center mb-0">You haven't completed any quizzes yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level-specific Subjects -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Your Level Subjects</h5>
+                </div>
+                <div class="card-body">
+                    {% if level_subjects %}
+                    <div class="row">
+                        {% for subject in level_subjects %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ subject.name }}</h5>
+                                    <p class="card-text">{{ subject.description }}</p>
+                                    <a href="{{ url_for('show_subject', subject_id=subject.id) }}" class="btn btn-primary btn-sm">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-center mb-0">No subjects available for your level.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .profile-link {
+        position: relative;
+        display: block;
+    }
+    .profile-picture {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: transform 0.2s;
+    }
+    .profile-picture:hover {
+        transform: scale(1.1);
+    }
+    .edit-overlay {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        background: #007bff;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        border: 2px solid white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        transition: all 0.2s;
+    }
+    .profile-link:hover .edit-overlay {
+        background: #0056b3;
+        transform: scale(1.1);
+    }
+    .welcome-section {
+        margin-top: 20px;
+    }
+    .welcome-section h1 {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    .welcome-section .lead {
+        color: #7f8c8d;
+        font-size: 1.2rem;
+    }
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.5em 0.8em;
+    }
+    .table th {
+        background-color: #f8f9fa;
+    }
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+    }
+</style>
+{%endblock%}

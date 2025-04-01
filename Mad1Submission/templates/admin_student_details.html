@@ -1,0 +1,136 @@
+{% extends "dashboard_layout.html" %}
+
+{% block title %}Student Details{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">Student Details</h2>
+        </div>
+    </div>
+
+    <!-- Student Information -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <tr>
+                            <th>Name:</th>
+                            <td>{{ student.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email:</th>
+                            <td>{{ student.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Level:</th>
+                            <td>{{ student.level }}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Birth:</th>
+                            <td>{{ student.dob }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone:</th>
+                            <td>{{ student.phone_no }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Performance Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            <h3 class="text-primary">{{ completed_quizzes|length }}</h3>
+                            <p>Quizzes Taken</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h3 class="text-success">{{ "%.1f"|format(student.average_score) }}%</h3>
+                            <p>Average Score</p>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-6 text-center">
+                            <h3 class="text-success">{{ completed_quizzes|selectattr('status', 'equalto', 'Passed')|list|length }}</h3>
+                            <p>Quizzes Passed</p>
+                        </div>
+                        <div class="col-6 text-center">
+                            <h3 class="text-danger">{{ completed_quizzes|selectattr('status', 'equalto', 'Failed')|list|length }}</h3>
+                            <p>Quizzes Failed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz History -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Quiz History</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Quiz Name</th>
+                                    <th>Subject</th>
+                                    <th>Chapter</th>
+                                    <th>Score</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for quiz in completed_quizzes %}
+                                <tr>
+                                    <td>{{ quiz.name }}</td>
+                                    <td>{{ quiz.chapter.subject.name }}</td>
+                                    <td>{{ quiz.chapter.name }}</td>
+                                    <td>{{ "%.1f"|format(quiz.score) }}%</td>
+                                    <td>
+                                        <span class="badge {% if quiz.status == 'Passed' %}bg-success{% else %}bg-danger{% endif %}">
+                                            {{ quiz.status }}
+                                        </span>
+                                    </td>
+                                    <td>{{ quiz.date.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.5em 0.8em;
+    }
+    .table th {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master - Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .home-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .home-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .home-header h1 {
+            color: #333;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .home-header p {
+            color: #6c757d;
+            font-size: 1.2rem;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .btn-home {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-register {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .btn-register:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+        .btn-login {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-login:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+        .features {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #dee2e6;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #0d6efd;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="home-container">
+            <div class="home-header">
+                <h1>Quiz Master</h1>
+                <p>Test your knowledge with our interactive quizzes</p>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/register/" class="btn btn-home btn-register">Register</a>
+                <a href="/login/" class="btn btn-home btn-login">Login</a>
+            </div>
+
+            <div class="features">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">📚</div>
+                            <h3>Multiple Subjects</h3>
+                            <p>Access quizzes across various subjects and topics</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Track Progress</h3>
+                            <p>Monitor your performance and improvement over time</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <div class="feature-icon">🏆</div>
+                            <h3>Achieve Goals</h3>
+                            <p>Set and achieve your learning objectives</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

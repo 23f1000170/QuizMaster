@@ -1,0 +1,15 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Delete Quiz {%endblock%}
+
+{%block content%}
+<h1>Delete Quiz</h1>
+<p>Are you sure you want to delete {{quiz.name}}?</p>
+        <form action="{{ url_for('delete_quiz_post', subject_id=quiz.subject_id, chapter_id=quiz.chapter_id, quiz_id=quiz.id) }}" method="post">
+        <div class="btn">
+            <button value="Add" type="submit">Delete</button>
+        </div>   
+        </form>
+{%endblock%}    
+</body>
+</html>

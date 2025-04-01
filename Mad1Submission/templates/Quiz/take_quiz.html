@@ -1,0 +1,150 @@
+{% extends "dashboard_layout.html" %}
+
+{% block title %}Take Quiz - {{ quiz.name }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('student') }}">Dashboard</a></li>
+                    <li class="breadcrumb-item">{{ quiz.chapter.subject.name }}</li>
+                    <li class="breadcrumb-item">{{ quiz.chapter.name }}</li>
+                    <li class="breadcrumb-item active">{{ quiz.name }}</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">{{ quiz.name }}</h5>
+                        <div class="timer" id="timer">Time Remaining: <span id="timeLeft"></span></div>
+                    </div>
+                    <p class="text-white mb-0 mt-2">
+                        Duration: {{ quiz.duration }} minutes | 
+                        Total Questions: {{ quiz.questions|length }}
+                    </p>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('submit_quiz', subject_id=quiz.subject_id, chapter_id=quiz.chapter_id, quiz_id=quiz.id) }}" id="quizForm">
+                        {% for question in quiz.questions %}
+                        <div class="question-card mb-4">
+                            <h5 class="mb-3">Question {{ loop.index }}:</h5>
+                            <p class="mb-3">{{ question.question_statement }}</p>
+                            
+                            <div class="options">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" 
+                                           name="question_{{ question.id }}" 
+                                           id="q{{ question.id }}_1" value="1" required>
+                                    <label class="form-check-label" for="q{{ question.id }}_1">
+                                        {{ question.option_1 }}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" 
+                                           name="question_{{ question.id }}" 
+                                           id="q{{ question.id }}_2" value="2">
+                                    <label class="form-check-label" for="q{{ question.id }}_2">
+                                        {{ question.option_2 }}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" 
+                                           name="question_{{ question.id }}" 
+                                           id="q{{ question.id }}_3" value="3">
+                                    <label class="form-check-label" for="q{{ question.id }}_3">
+                                        {{ question.option_3 }}
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" 
+                                           name="question_{{ question.id }}" 
+                                           id="q{{ question.id }}_4" value="4">
+                                    <label class="form-check-label" for="q{{ question.id }}_4">
+                                        {{ question.option_4 }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                Submit Quiz
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .timer {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    .question-card {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid #dee2e6;
+    }
+    .options {
+        margin-left: 1rem;
+    }
+    .form-check-input:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const quizForm = document.getElementById('quizForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const timeLeftSpan = document.getElementById('timeLeft');
+    
+    // Get quiz duration from data attribute
+    const quizDuration = parseInt(document.getElementById('quizForm').dataset.duration) * 60;
+    let timeLeft = quizDuration;
+    
+    function updateTimer() {
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timeLeftSpan.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        
+        if (timeLeft <= 0) {
+            quizForm.submit();
+        } else {
+            timeLeft--;
+            setTimeout(updateTimer, 1000);
+        }
+    }
+    
+    updateTimer();
+    
+    // Confirm before leaving page
+    window.onbeforeunload = function() {
+        return "Are you sure you want to leave? Your quiz progress will be lost.";
+    };
+    
+    // Remove confirmation when submitting form
+    quizForm.onsubmit = function() {
+        window.onbeforeunload = null;
+    };
+});
+</script>
+
+<!-- Add quiz duration as a data attribute -->
+<script>
+    document.getElementById('quizForm').dataset.duration = "{{ quiz.duration }}";
+</script>
+{% endblock %} 

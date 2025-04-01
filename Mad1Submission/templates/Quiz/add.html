@@ -1,0 +1,68 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Add Quiz{%endblock%}
+
+{%block content%}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Add New Quiz</h2>
+                </div>
+                <div class="card-body">
+                    <form action="{{ url_for('add_quiz', subject_id=subject_id, chapter_id=chapter.id) }}" method="POST">
+                        
+                        <div class="mb-3">
+                            <label for="quiz_name" class="form-label">Quiz Name</label>
+                            <input type="text" class="form-control" id="quiz_name" name="name" 
+                                   value="{{ quiz.name if quiz else '' }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Select Subject</label>
+                            <select class="form-select" id="subject" name="subject" required>
+                                {% for subject in subjects %}
+                                    <option value="{{ subject.id }}" 
+                                        {% if quiz and quiz.subject_id == subject.id %}selected{% endif %}>
+                                        {{ subject.name }} ({{ subject.level }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="total_questions" class="form-label">Total Questions</label>
+                            <input type="number" class="form-control" id="total_questions" name="total_questions" 
+                                   value="{{ quiz.total_questions if quiz else '' }}" required min="1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (minutes)</label>
+                            <input type="number" class="form-control" id="duration" name="duration" 
+                                   value="{{ quiz.duration if quiz else '' }}" required min="1">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="pass_percentage" class="form-label">Pass Percentage</label>
+                            <input type="number" class="form-control" id="pass_percentage" name="pass_percentage" 
+                                   value="{{ quiz.pass_percentage if quiz else '' }}" required min="0" max="100">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3">{{ quiz.description if quiz else '' }}</textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                {% if quiz %}Add Quiz{% else %}Add Quiz{% endif %}
+                            </button>
+                            <a href="{{ url_for('show_chapter',subject_id=subject_id, chapter_id=chapter.id) }}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

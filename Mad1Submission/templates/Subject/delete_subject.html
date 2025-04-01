@@ -1,0 +1,15 @@
+{% extends 'dashboard_layout.html' %}
+
+{%block title%}Delete subject {%endblock%}
+
+{%block content%}
+<h1>Delete Subject</h1>
+<p>Are you sure you want to delete {{subject.name}}?</p>
+    <form action="{{ url_for('delete_subject_post', subject_id=subject.id) }}" method="post">
+        <div class="btn">
+            <button value="Add" type="submit">Delete</button>
+        </div>   
+    </form>
+{%endblock%}    
+</body>
+</html>
